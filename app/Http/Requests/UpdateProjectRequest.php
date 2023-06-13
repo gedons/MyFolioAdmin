@@ -34,6 +34,7 @@ class UpdateProjectRequest extends FormRequest
             'user_id' => 'exists:users,id',
             'status' => 'required|boolean',
             'description' => 'nullable|string',
+            'url' => 'required|string|max:1000',
         ];
     }
 }

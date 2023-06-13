@@ -3,12 +3,12 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Project;
+use App\Models\Blog;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
-class StoreProjectRequest extends FormRequest
+class StoreBlogRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

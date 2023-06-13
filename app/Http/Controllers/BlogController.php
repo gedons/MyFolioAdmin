@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
-use App\Http\Requests\StoreProjectRequest;
-use App\Http\Requests\UpdateProjectRequest;
-use App\Http\Resources\ProjectResource;
+use App\Models\Blog;
+use App\Http\Requests\StoreBlogRequest;
+use App\Http\Requests\UpdateBlogRequest;
+use App\Http\Resources\BlogResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
@@ -13,26 +13,17 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
-class ProjectController extends Controller
+class BlogController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index(Request $request)
     {
         $user = $request->user();
-        return ProjectResource::collection(Project::where('user_id', $user->id)->orderBy('created_at', 'DESC')->paginate(3));
+        return BlogResource::collection(Blog::where('user_id', $user->id)->orderBy('created_at', 'DESC')->paginate(3));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreProjectRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreProjectRequest $request)
+   
+    public function store(StoreBlogRequest $request)
     {
         $data = $request->validated();
 
@@ -42,35 +33,24 @@ class ProjectController extends Controller
             $data['image'] = $relativePath;
         }
 
-        $project = Project::create($data);
+        $blog = Blog::create($data);
 
-        return new ProjectResource($project);
+        return new BlogResource($blog);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Project $project, Request $request)
+
+    public function show(Blog $blog, Request $request)
     {
         $user = $request->user();
-        if ($user->id !== $project->user_id) {
+        if ($user->id !== $blog->user_id) {
             return abort(403, 'Unauthorized action.');
         }
 
-        return new ProjectResource($project);
+        return new BlogResource($blog);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateProjectRequest  $request
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateProjectRequest $request, Project $project)
+
+    public function update(UpdateBlogRequest $request, Blog $blog)
     {
         $data = $request->validated();
 
@@ -80,36 +60,31 @@ class ProjectController extends Controller
             $data['image'] = $relativePath;
 
             //If there is an old image, delete it
-            if ($project->image) {
-                $absolutePath = public_path($project->image);
+            if ($blog->image) {
+                $absolutePath = public_path($blog->image);
                 File::delete($absolutePath);
             }
         }
 
-        // Update project in the database
-        $project->update($data);
+        // Update blog post in the database
+        $blog->update($data);
 
-        return new ProjectResource($project);
+        return new BlogResource($blog);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Project $project, Request $request)
+  
+    public function destroy(Blog $blog, Request $request)
     {
         $user = $request->user();
-        if ($user->id !== $project->user_id) {
+        if ($user->id !== $blog->user_id) {
             return abort(403, 'Unauthorized action.');
         }
 
-        $project->delete();
+        $blog->delete();
 
         // If there is an old image, delete it
-        if ($project->image) {
-            $absolutePath = public_path($project->image);
+        if ($blog->image) {
+            $absolutePath = public_path($blog->image);
             File::delete($absolutePath);
         }
 
@@ -139,7 +114,7 @@ class ProjectController extends Controller
             throw new \Exception('did not match data URI with image data');
         }
 
-        $dir = 'images/';
+        $dir = 'images/blogpost/';
         $file = Str::random() . '.' . $type;
         $absolutePath = public_path($dir);
         $relativePath = $dir . $file;
@@ -152,10 +127,10 @@ class ProjectController extends Controller
     }
 
     //Front View Functions
-    public function FrontShowProject()
-    {
-        $proj = ProjectResource::collection(Project::orderBy('created_at', 'DESC')->get());
-        return $proj;
-    }
+    // public function FrontShowBlog()
+    // {
+    //     $posts = BlogResource::collection(Blog::orderBy('created_at', 'DESC')->get());
+    //     return $posts;
+    // }
 
 }

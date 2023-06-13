@@ -3,12 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Project;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
+use App\Models\Blog;
 
-class StoreProjectRequest extends FormRequest
+class UpdateBlogRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,14 +14,11 @@ class StoreProjectRequest extends FormRequest
      */
     public function authorize()
     {
+        $blog = $this->route('blog');
+        if ($this->user()->id !== $blog->user_id) {
+            return false;
+        }
         return true;
-    }
-
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'user_id' => $this->user()->id
-        ]);
     }
 
     /**

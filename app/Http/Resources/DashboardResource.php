@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\URL;
 
-class ProjectResource extends JsonResource
+class DashboardResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -22,6 +22,7 @@ class ProjectResource extends JsonResource
             'slug' => $this->slug,
             'url' => $this->url,
             'status' => !!$this->status,
+            // 'status' => $this->status != 'draft',
             'description' => $this->description,
             'created_at' => (new \DateTime($this->created_at))->format('Y-m-d H:i:s'),
             'updated_at' => (new \DateTime($this->updated_at))->format('Y-m-d H:i:s'),
