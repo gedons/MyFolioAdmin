@@ -127,10 +127,10 @@ class BlogController extends Controller
     }
 
     //Front View Functions
-    // public function FrontShowBlog()
-    // {
-    //     $posts = BlogResource::collection(Blog::orderBy('created_at', 'DESC')->get());
-    //     return $posts;
-    // }
+    public function FrontShowBlog()
+    {
+        $posts = BlogResource::collection(Blog::orderBy('created_at', 'DESC')->get());
+        return $posts;
+    }
 
 }

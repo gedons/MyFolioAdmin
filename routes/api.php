@@ -4,6 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ContactMail;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,5 +32,9 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('/view/projects',  [ProjectController::class, 'FrontShowProject']);
+Route::get('/view/blogs',  [BlogController::class, 'FrontShowBlog']);
+Route::post('/view/contact',  [ContactMail::class, 'sendEmail']);
+Route::post('/view/store',  [ContactMail::class, 'store']);
+Route::get('/view/show',  [ContactMail::class, 'index']);
 
 Route::post('/login', [AuthController::class, 'login']);

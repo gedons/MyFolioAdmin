@@ -11,7 +11,8 @@
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.7",
-        "spatie/laravel-sluggable": "^3.5"
+        "spatie/laravel-sluggable": "^3.5",
+        "symfony/mime": "^6.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
